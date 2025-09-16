@@ -1,11 +1,16 @@
+'use client';
+
 import Link from 'next/link';
-import { ShoppingBag, Search, User, Heart } from 'lucide-react';
+import { useState } from 'react';
+import { ShoppingBag, Search, User, Heart, Menu, X } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -19,7 +24,7 @@ export default function Layout({ children }: LayoutProps) {
               </span>
             </Link>
 
-            {/* Navigation */}
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               <Link 
                 href="/products" 
@@ -55,23 +60,92 @@ export default function Layout({ children }: LayoutProps) {
 
             {/* Action Items */}
             <div className="flex items-center space-x-4">
-              <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300">
-                <Search className="w-5 h-5" />
-              </button>
-              <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300">
-                <Heart className="w-5 h-5" />
-              </button>
-              <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300">
-                <User className="w-5 h-5" />
-              </button>
+              {/* Desktop Action Items */}
+              <div className="hidden sm:flex items-center space-x-4">
+                <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300">
+                  <Search className="w-5 h-5" />
+                </button>
+                <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300">
+                  <Heart className="w-5 h-5" />
+                </button>
+                <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300">
+                  <User className="w-5 h-5" />
+                </button>
+              </div>
+              
               <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300 relative">
                 <ShoppingBag className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 bg-accent-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                   0
                 </span>
               </button>
+
+              {/* Mobile Menu Button */}
+              <button 
+                className="md:hidden p-2 text-text-muted hover:text-foreground transition-colors duration-300"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
             </div>
           </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden border-t border-border-subtle bg-white">
+              <div className="px-4 py-4 space-y-4">
+                {/* Mobile Navigation Links */}
+                <Link 
+                  href="/products" 
+                  className="block text-text-muted hover:text-foreground transition-colors duration-300 py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Products
+                </Link>
+                <Link 
+                  href="/categories" 
+                  className="block text-text-muted hover:text-foreground transition-colors duration-300 py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Categories
+                </Link>
+                <Link 
+                  href="/track" 
+                  className="block text-text-muted hover:text-foreground transition-colors duration-300 py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Track Order
+                </Link>
+                <Link 
+                  href="/about" 
+                  className="block text-text-muted hover:text-foreground transition-colors duration-300 py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Our Story
+                </Link>
+                <Link 
+                  href="/contact" 
+                  className="block text-text-muted hover:text-foreground transition-colors duration-300 py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contact
+                </Link>
+
+                {/* Mobile Action Items */}
+                <div className="flex items-center space-x-4 pt-4 border-t border-border-subtle">
+                  <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300">
+                    <Search className="w-5 h-5" />
+                  </button>
+                  <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300">
+                    <Heart className="w-5 h-5" />
+                  </button>
+                  <button className="p-2 text-text-muted hover:text-foreground transition-colors duration-300">
+                    <User className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 
