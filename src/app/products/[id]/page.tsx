@@ -35,6 +35,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   const [activeTab, setActiveTab] = useState('description');
   const [liveTemp, setLiveTemp] = useState<LiveTemperature | null>(null);
   const [tempLoading, setTempLoading] = useState(true);
+  const [showOrderSuccess, setShowOrderSuccess] = useState(false);
+  const [showCartSuccess, setShowCartSuccess] = useState(false);
 
   // Unwrap the params Promise using React.use()
   const { id } = use(params);
@@ -51,12 +53,20 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     const fetchLiveTemp = async () => {
       try {
         const response = await fetch('/api/temperature');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Response is not JSON');
+        }
         const result = await response.json();
         if (result.success) {
           setLiveTemp(result.data);
         }
       } catch (error) {
         console.error('Error fetching live temperature:', error);
+        // Continue silently - don't break the page
       } finally {
         setTempLoading(false);
       }
@@ -69,6 +79,18 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     
     return () => clearInterval(interval);
   }, []);
+
+  // Handle Order Now button
+  const handleOrderNow = () => {
+    setShowOrderSuccess(true);
+    setTimeout(() => setShowOrderSuccess(false), 4000);
+  };
+
+  // Handle Add to Cart button
+  const handleAddToCart = () => {
+    setShowCartSuccess(true);
+    setTimeout(() => setShowCartSuccess(false), 4000);
+  };
 
   // Generate star rating display
   const renderStars = (rating: number) => {
@@ -306,17 +328,61 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-4">
-                <button className="flex-1 bg-accent-primary hover:bg-accent-primary/90 text-white px-6 py-3 rounded-full font-semibold transition-colors flex items-center justify-center gap-2">
-                  <ShoppingBag className="w-5 h-5" />
-                  Add to Cart
-                </button>
-                <button className="p-3 border border-border-subtle rounded-full hover:bg-neutral-cool transition-colors">
-                  <Heart className="w-5 h-5" />
-                </button>
-                <button className="p-3 border border-border-subtle rounded-full hover:bg-neutral-cool transition-colors">
-                  <Share2 className="w-5 h-5" />
-                </button>
+              <div className="space-y-4">
+                {/* Success Messages */}
+                {showOrderSuccess && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3 animate-fade-in">
+                    <div className="bg-green-500 rounded-full p-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-green-800 font-medium">
+                      Order placed successfully! We&apos;ll contact you shortly.
+                    </span>
+                  </div>
+                )}
+                
+                {showCartSuccess && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center gap-3 animate-fade-in">
+                    <div className="bg-blue-500 rounded-full p-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-blue-800 font-medium">
+                      Added to cart! Continue shopping or checkout.
+                    </span>
+                  </div>
+                )}
+
+                <div className="flex gap-4">
+                  <button 
+                    onClick={handleOrderNow}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                  >
+                    <ShoppingBag className="w-5 h-5" />
+                    Order Now
+                  </button>
+                  <button 
+                    onClick={handleAddToCart}
+                    className="flex-1 bg-green-600 hover:bg-green-700 text-white px-6 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                  >
+                    <ShoppingBag className="w-5 h-5" />
+                    Add to Cart
+                  </button>
+                </div>
+                
+                <div className="flex gap-4">
+                  <button className="flex-1 p-3 border-2 border-border-subtle rounded-full hover:bg-neutral-cool hover:border-red-400 transition-all flex items-center justify-center gap-2 group">
+                    <Heart className="w-5 h-5 group-hover:fill-red-400 group-hover:text-red-400 transition-all" />
+                    <span className="text-sm font-medium">Save</span>
+                  </button>
+                  <button className="flex-1 p-3 border-2 border-border-subtle rounded-full hover:bg-neutral-cool hover:border-blue-400 transition-all flex items-center justify-center gap-2 group">
+                    <Share2 className="w-5 h-5 group-hover:text-blue-600 transition-all" />
+                    <span className="text-sm font-medium">Share</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

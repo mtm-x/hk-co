@@ -15,8 +15,26 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, send to backend
+    
+    // Create mailto link with form data
+    const mailtoLink = `mailto:hello@hkco.in?subject=${encodeURIComponent(formData.subject || 'Contact Form Submission')}&body=${encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    )}`;
+    
+    // Open email client
+    window.location.href = mailtoLink;
+    
+    // Show success message
     setSubmitted(true);
+    
+    // Reset form
+    setFormData({
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    });
+    
     setTimeout(() => setSubmitted(false), 5000);
   };
 
@@ -197,7 +215,7 @@ export default function ContactPage() {
 
                   <button
                     type="submit"
-                    className="w-full bg-accent-primary hover:bg-accent-primary/90 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     <Send className="w-5 h-5" />
                     Send Message

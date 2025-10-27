@@ -24,12 +24,20 @@ export default function ProductCard({ product }: ProductCardProps) {
     const fetchLiveTemp = async () => {
       try {
         const response = await fetch('/api/temperature');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Response is not JSON');
+        }
         const result = await response.json();
         if (result.success) {
           setLiveTemp(result.data);
         }
       } catch (error) {
         console.error('Error fetching live temperature:', error);
+        // Continue silently - don't break the card
       }
     };
 
