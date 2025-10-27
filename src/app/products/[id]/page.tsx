@@ -485,28 +485,6 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                           </li>
                         </ul>
                       </div>
-
-                      {/* Demo Delivery Link */}
-                      {(() => {
-                        const demoDelivery = mockDeliveries.find(d => d.product_id === product.id);
-                        return demoDelivery ? (
-                          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                            <h4 className="font-semibold text-blue-800 mb-2">Demo: View Sample Tracking</h4>
-                            <p className="text-sm text-blue-700 mb-3">
-                              See what the tracking page looks like for a delivered product:
-                            </p>
-                            <a
-                              href={`/track/${demoDelivery.tracking_number}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                            >
-                              <ShoppingBag className="w-4 h-4" />
-                              View Demo Tracking Page
-                            </a>
-                          </div>
-                        ) : null;
-                      })()}
                     </div>
 
                     <div>

@@ -179,22 +179,6 @@ export default function LiveTemperaturePage() {
               </div>
             )}
           </div>
-
-          {/* Info Box */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h3 className="font-semibold text-foreground mb-2">
-              📡 How This Works
-            </h3>
-            <p className="text-sm text-text-muted mb-3">
-              This page displays real-time temperature and humidity data sent from a Raspberry Pi sensor. 
-              The data updates automatically every 1 second when auto-refresh is enabled.
-            </p>
-            <div className="bg-white rounded p-3 font-mono text-xs text-gray-700">
-              <div>API Endpoint: <span className="text-accent-primary">/api/temperature</span></div>
-              <div>Update Interval: <span className="text-accent-primary">1 second</span></div>
-              <div>Data Storage: <span className="text-accent-primary">In-Memory (Demo)</span></div>
-            </div>
-          </div>
         </div>
       </div>
     </Layout>

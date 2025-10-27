@@ -82,32 +82,6 @@ export default function TrackPage() {
             </form>
           </div>
 
-          {/* Demo Section */}
-          <div className="bg-white rounded-card shadow-elegant p-8">
-            <h2 className="heading-secondary text-2xl text-foreground mb-6 text-center">
-              Try Demo Tracking Numbers
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {mockDeliveries.map((delivery) => (
-                <div key={delivery.id} className="border border-border-subtle rounded-lg p-4">
-                  <h3 className="font-semibold text-foreground mb-2">
-                    {delivery.customer_name}&apos;s Order
-                  </h3>
-                  <p className="text-sm text-text-muted mb-3">
-                    Tracking: <span className="font-mono">{delivery.tracking_number}</span>
-                  </p>
-                  <button
-                    onClick={() => router.push(`/track/${delivery.tracking_number}`)}
-                    className="w-full bg-neutral-cool hover:bg-border-subtle text-foreground py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    View Tracking
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* QR Instructions */}
           <div className="mt-8 text-center">
             <div className="bg-blue-50 border border-blue-200 rounded-card p-6">
