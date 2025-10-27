@@ -35,8 +35,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 
     fetchLiveTemp();
     
-    // Refresh every 15 seconds
-    const interval = setInterval(fetchLiveTemp, 15000);
+    // Refresh every 1 second
+    const interval = setInterval(fetchLiveTemp, 1000);
     
     return () => clearInterval(interval);
   }, []);

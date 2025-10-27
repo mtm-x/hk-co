@@ -64,8 +64,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
     fetchLiveTemp();
     
-    // Refresh every 10 seconds
-    const interval = setInterval(fetchLiveTemp, 10000);
+    // Refresh every 1 second
+    const interval = setInterval(fetchLiveTemp, 1000);
     
     return () => clearInterval(interval);
   }, []);

@@ -39,7 +39,7 @@ export default function LiveTemperaturePage() {
 
     const interval = setInterval(() => {
       fetchTemperature();
-    }, 5000); // Refresh every 5 seconds
+    }, 1000); // Refresh every 1 second
 
     return () => clearInterval(interval);
   }, [autoRefresh]);
@@ -147,7 +147,7 @@ export default function LiveTemperaturePage() {
                   <div className="flex items-center gap-2">
                     <RefreshCw className={`w-5 h-5 ${autoRefresh ? 'text-green-600 animate-spin' : 'text-gray-400'}`} />
                     <span className="text-sm font-medium text-foreground">
-                      Auto-refresh every 5 seconds
+                      Auto-refresh every 1 second
                     </span>
                   </div>
                   <button
@@ -187,11 +187,11 @@ export default function LiveTemperaturePage() {
             </h3>
             <p className="text-sm text-text-muted mb-3">
               This page displays real-time temperature and humidity data sent from a Raspberry Pi sensor. 
-              The data updates automatically every 5 seconds when auto-refresh is enabled.
+              The data updates automatically every 1 second when auto-refresh is enabled.
             </p>
             <div className="bg-white rounded p-3 font-mono text-xs text-gray-700">
               <div>API Endpoint: <span className="text-accent-primary">/api/temperature</span></div>
-              <div>Update Interval: <span className="text-accent-primary">5 seconds</span></div>
+              <div>Update Interval: <span className="text-accent-primary">1 second</span></div>
               <div>Data Storage: <span className="text-accent-primary">In-Memory (Demo)</span></div>
             </div>
           </div>
