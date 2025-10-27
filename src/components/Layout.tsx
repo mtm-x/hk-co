@@ -45,6 +45,12 @@ export default function Layout({ children }: LayoutProps) {
                 Track Order
               </Link>
               <Link 
+                href="/live-temp" 
+                className="text-text-muted hover:text-foreground transition-colors duration-300"
+              >
+                Live Temp
+              </Link>
+              <Link 
                 href="/about" 
                 className="text-text-muted hover:text-foreground transition-colors duration-300"
               >
@@ -115,6 +121,13 @@ export default function Layout({ children }: LayoutProps) {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Track Order
+                </Link>
+                <Link 
+                  href="/live-temp" 
+                  className="block text-text-muted hover:text-foreground transition-colors duration-300 py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Live Temp
                 </Link>
                 <Link 
                   href="/about" 
