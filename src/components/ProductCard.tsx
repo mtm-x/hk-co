@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Star, MapPin, Thermometer, Package } from 'lucide-react';
 import { Product } from '@/types/product';
@@ -6,7 +9,38 @@ interface ProductCardProps {
   product: Product;
 }
 
+interface LiveTemperature {
+  temperature: number;
+  humidity: number;
+  timestamp: string;
+  location: string;
+}
+
 export default function ProductCard({ product }: ProductCardProps) {
+  const [liveTemp, setLiveTemp] = useState<LiveTemperature | null>(null);
+
+  // Fetch live temperature
+  useEffect(() => {
+    const fetchLiveTemp = async () => {
+      try {
+        const response = await fetch('/api/temperature');
+        const result = await response.json();
+        if (result.success) {
+          setLiveTemp(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching live temperature:', error);
+      }
+    };
+
+    fetchLiveTemp();
+    
+    // Refresh every 15 seconds
+    const interval = setInterval(fetchLiveTemp, 15000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
   // Generate star rating display
   const renderStars = (rating: number) => {
     const stars = [];
@@ -44,10 +78,15 @@ export default function ProductCard({ product }: ProductCardProps) {
             <Package className="w-16 h-16 text-white/80" />
           </div>
           
-          {/* Temperature Badge */}
-          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1 text-xs font-medium">
-            <Thermometer className="w-3 h-3 text-blue-600" />
-            <span>{product.current_temperature}°C</span>
+          {/* Temperature Badge - Live */}
+          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1 text-xs font-medium shadow-md border border-blue-200">
+            <Thermometer className={`w-3 h-3 ${liveTemp ? 'text-red-600' : 'text-blue-600'}`} />
+            <span className={liveTemp ? 'text-red-600 font-bold' : ''}>
+              {liveTemp ? liveTemp.temperature.toFixed(1) : product.current_temperature}°C
+            </span>
+            {liveTemp && (
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse ml-0.5"></span>
+            )}
           </div>
 
           {/* Cold Chain Badge */}

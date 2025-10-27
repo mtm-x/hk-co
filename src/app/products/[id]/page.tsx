@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, use } from 'react';
+import { useState, useEffect, use } from 'react';
 import { notFound } from 'next/navigation';
 import { 
   Star, 
@@ -11,7 +11,8 @@ import {
   CheckCircle,
   Heart,
   Share2,
-  ShoppingBag
+  ShoppingBag,
+  RefreshCw
 } from 'lucide-react';
 import Layout from '@/components/Layout';
 import QRCodeGenerator from '@/components/QRCodeGenerator';
@@ -22,9 +23,18 @@ interface ProductDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
+interface LiveTemperature {
+  temperature: number;
+  humidity: number;
+  timestamp: string;
+  location: string;
+}
+
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState('description');
+  const [liveTemp, setLiveTemp] = useState<LiveTemperature | null>(null);
+  const [tempLoading, setTempLoading] = useState(true);
 
   // Unwrap the params Promise using React.use()
   const { id } = use(params);
@@ -35,6 +45,30 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   if (!product) {
     notFound();
   }
+
+  // Fetch live temperature from Raspberry Pi
+  useEffect(() => {
+    const fetchLiveTemp = async () => {
+      try {
+        const response = await fetch('/api/temperature');
+        const result = await response.json();
+        if (result.success) {
+          setLiveTemp(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching live temperature:', error);
+      } finally {
+        setTempLoading(false);
+      }
+    };
+
+    fetchLiveTemp();
+    
+    // Refresh every 10 seconds
+    const interval = setInterval(fetchLiveTemp, 10000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   // Generate star rating display
   const renderStars = (rating: number) => {
@@ -92,10 +126,32 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   </div>
                 </div>
                 
-                {/* Temperature Badge */}
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-2 flex items-center gap-2">
-                  <Thermometer className="w-4 h-4 text-blue-600" />
-                  <span className="font-medium">{product.current_temperature}°C</span>
+                {/* Temperature Badge - Live from Raspberry Pi */}
+                <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg border border-blue-200">
+                  {tempLoading ? (
+                    <div className="flex items-center gap-2">
+                      <RefreshCw className="w-4 h-4 text-blue-600 animate-spin" />
+                      <span className="text-sm text-gray-600">Loading...</span>
+                    </div>
+                  ) : liveTemp ? (
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Thermometer className="w-5 h-5 text-red-600" />
+                        <div>
+                          <span className="font-bold text-lg text-red-600">{liveTemp.temperature.toFixed(1)}°C</span>
+                          <span className="text-xs text-green-600 ml-2">● LIVE</span>
+                        </div>
+                      </div>
+                      <div className="text-xs text-gray-500 flex items-center gap-1">
+                        <span>💧 {liveTemp.humidity.toFixed(0)}% humidity</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Thermometer className="w-4 h-4 text-blue-600" />
+                      <span className="font-medium">{product.current_temperature}°C</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Cold Chain Badge */}
@@ -171,10 +227,29 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
               {/* Key Info Grid */}
               <div className="grid grid-cols-3 gap-4">
-                <div className="bg-white p-4 rounded-lg text-center border border-border-subtle">
+                <div className="bg-white p-4 rounded-lg text-center border border-border-subtle hover:border-blue-400 transition-colors">
                   <Thermometer className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                  <div className="text-sm text-text-muted">Temperature</div>
-                  <div className="font-semibold text-foreground">{product.current_temperature}°C</div>
+                  <div className="text-sm text-text-muted">
+                    {liveTemp ? 'Live Temperature' : 'Temperature'}
+                  </div>
+                  {tempLoading ? (
+                    <div className="font-semibold text-foreground flex items-center justify-center gap-1">
+                      <RefreshCw className="w-3 h-3 animate-spin" />
+                      <span className="text-xs">Loading...</span>
+                    </div>
+                  ) : liveTemp ? (
+                    <div>
+                      <div className="font-bold text-lg text-red-600">
+                        {liveTemp.temperature.toFixed(1)}°C
+                      </div>
+                      <div className="text-xs text-green-600 flex items-center justify-center gap-1">
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse"></span>
+                        LIVE
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="font-semibold text-foreground">{product.current_temperature}°C</div>
+                  )}
                 </div>
                 
                 <div className="bg-white p-4 rounded-lg text-center border border-border-subtle">
