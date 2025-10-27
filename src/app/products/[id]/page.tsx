@@ -116,13 +116,21 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             {/* Left Column - Image Gallery */}
             <div className="space-y-4">
               {/* Main Image */}
-              <div className="relative aspect-square overflow-hidden rounded-card bg-white">
-                <div className="w-full h-full bg-gradient-to-br from-accent-primary via-accent-secondary to-orange-400 flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
-                      <span className="text-3xl font-bold">{product.name.charAt(0)}</span>
+              <div className="relative aspect-square overflow-hidden rounded-card bg-white shadow-elegant">
+                <div className={`w-full h-full flex items-center justify-center ${
+                  product.id === 'organic-alphonso-mangoes-001' ? 'bg-gradient-to-br from-yellow-300 via-orange-400 to-red-500' :
+                  product.id === 'organic-red-onions-002' ? 'bg-gradient-to-br from-purple-400 via-pink-400 to-red-400' :
+                  product.id === 'organic-baby-spinach-003' ? 'bg-gradient-to-br from-green-400 via-emerald-500 to-teal-500' :
+                  'bg-gradient-to-br from-accent-primary via-accent-secondary to-orange-400'
+                }`}>
+                  <div className="text-center transform hover:scale-110 transition-transform duration-500">
+                    <div className="text-9xl mb-6 drop-shadow-2xl">
+                      {product.id === 'organic-alphonso-mangoes-001' ? '🥭' :
+                       product.id === 'organic-red-onions-002' ? '🧅' :
+                       product.id === 'organic-baby-spinach-003' ? '🥬' :
+                       '🌱'}
                     </div>
-                    <p className="text-lg font-medium opacity-90">{product.name}</p>
+                    <p className="text-2xl font-bold text-white drop-shadow-lg px-4">{product.name}</p>
                   </div>
                 </div>
                 
@@ -169,19 +177,22 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`relative aspect-square overflow-hidden rounded-lg border-2 transition-all ${
+                    className={`relative aspect-square overflow-hidden rounded-lg border-2 transition-all shadow-md hover:shadow-lg ${
                       selectedImage === index 
-                        ? 'border-accent-primary' 
-                        : 'border-transparent hover:border-border-subtle'
+                        ? 'border-accent-primary ring-2 ring-accent-primary/50' 
+                        : 'border-transparent hover:border-accent-primary/30'
                     }`}
                   >
-                    <div className={`w-full h-full flex items-center justify-center text-white font-bold ${
-                      index === 0 ? 'bg-gradient-to-br from-blue-400 to-blue-600' :
-                      index === 1 ? 'bg-gradient-to-br from-green-400 to-green-600' :
-                      index === 2 ? 'bg-gradient-to-br from-purple-400 to-purple-600' :
-                      'bg-gradient-to-br from-pink-400 to-pink-600'
+                    <div className={`w-full h-full flex items-center justify-center text-4xl ${
+                      index === 0 ? 'bg-gradient-to-br from-yellow-300 via-orange-400 to-red-400' :
+                      index === 1 ? 'bg-gradient-to-br from-green-300 via-emerald-400 to-teal-500' :
+                      index === 2 ? 'bg-gradient-to-br from-purple-300 via-pink-400 to-red-400' :
+                      'bg-gradient-to-br from-blue-300 via-cyan-400 to-sky-500'
                     }`}>
-                      {index + 1}
+                      {product.id === 'organic-alphonso-mangoes-001' ? '🥭' :
+                       product.id === 'organic-red-onions-002' ? '🧅' :
+                       product.id === 'organic-baby-spinach-003' ? '🥬' :
+                       '🌱'}
                     </div>
                   </button>
                 ))}

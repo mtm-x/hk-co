@@ -74,8 +74,21 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="group bg-white rounded-card shadow-elegant overflow-hidden card-hover cursor-pointer">
         {/* Product Image */}
         <div className="relative h-64 overflow-hidden">
-          <div className="w-full h-full bg-gradient-to-br from-accent-primary via-accent-secondary to-orange-400 group-hover:scale-105 transition-transform duration-500 flex items-center justify-center">
-            <Package className="w-16 h-16 text-white/80" />
+          <div className={`w-full h-full group-hover:scale-110 transition-transform duration-500 flex items-center justify-center ${
+            product.id === 'organic-alphonso-mangoes-001' ? 'bg-gradient-to-br from-yellow-400 via-orange-400 to-red-500' :
+            product.id === 'organic-red-onions-002' ? 'bg-gradient-to-br from-purple-400 via-pink-400 to-red-400' :
+            product.id === 'organic-baby-spinach-003' ? 'bg-gradient-to-br from-green-400 via-emerald-500 to-teal-500' :
+            'bg-gradient-to-br from-accent-primary via-accent-secondary to-orange-400'
+          }`}>
+            <div className="text-white text-center">
+              <div className="text-7xl mb-4">
+                {product.id === 'organic-alphonso-mangoes-001' ? '🥭' :
+                 product.id === 'organic-red-onions-002' ? '🧅' :
+                 product.id === 'organic-baby-spinach-003' ? '🥬' :
+                 '🌱'}
+              </div>
+              <p className="text-lg font-semibold px-4 opacity-90">{product.name}</p>
+            </div>
           </div>
           
           {/* Temperature Badge - Live */}
