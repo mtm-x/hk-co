@@ -142,26 +142,6 @@ export default function LiveTemperaturePage() {
                   </div>
                 </div>
 
-                {/* Auto-refresh Toggle */}
-                <div className="flex items-center justify-between bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2">
-                    <RefreshCw className={`w-5 h-5 ${autoRefresh ? 'text-green-600 animate-spin' : 'text-gray-400'}`} />
-                    <span className="text-sm font-medium text-foreground">
-                      Auto-refresh every 1 second
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setAutoRefresh(!autoRefresh)}
-                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-                      autoRefresh 
-                        ? 'bg-green-600 text-white hover:bg-green-700' 
-                        : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-                    }`}
-                  >
-                    {autoRefresh ? 'ON' : 'OFF'}
-                  </button>
-                </div>
-
                 {/* Manual Refresh Button */}
                 <div className="text-center">
                   <button
