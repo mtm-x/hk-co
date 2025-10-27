@@ -29,7 +29,7 @@ export default function ProductsPage() {
               </button>
               <select className="bg-white border border-border-subtle px-4 py-2 rounded-lg">
                 <option>All Countries</option>
-                <option>Italy</option>
+                <option>India</option>
                 <option>Spain</option>
                 <option>France</option>
               </select>

@@ -2,6 +2,8 @@ export interface Product {
   // Basic Information
   id: string;
   name: string;
+  image?: string; // optional filename located in /products folder
+  images?: string[]; // optional array of image filenames for gallery
   current_temperature: number; // in Celsius
   expiration_date: Date;
 

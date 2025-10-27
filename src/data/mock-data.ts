@@ -4,6 +4,8 @@ export const mockProducts: Product[] = [
   {
     id: 'organic-alphonso-mangoes-001',
     name: 'Organic Alphonso Mangoes',
+    image: 'mango1.jpg',
+    images: ['mango1.jpg', 'mango 2.jpeg', 'mango 3.jpeg', 'mango 4.jpg'],
     current_temperature: 12.5,
     expiration_date: new Date('2025-09-25'),
     origin_country: 'India',
@@ -48,6 +50,8 @@ export const mockProducts: Product[] = [
   {
     id: 'organic-red-onions-002',
     name: 'Organic Red Onions',
+    image: 'onion 2.jpeg',
+    images: ['onion 1.jpeg', 'onion 2.jpeg', 'onion 3.jpeg', 'onion 4.jpeg'],
     current_temperature: 8.0,
     expiration_date: new Date('2025-10-15'),
     origin_country: 'India',
@@ -92,6 +96,8 @@ export const mockProducts: Product[] = [
   {
     id: 'organic-baby-spinach-003',
     name: 'Organic Baby Spinach',
+    image: 'spinach 1.jpeg',
+    images: ['spinach 1.jpeg', 'spinach 2.jpeg', 'spinach 3.jpeg', 'spinach 4.jpg'],
     current_temperature: 2.5,
     expiration_date: new Date('2025-09-18'),
     origin_country: 'India',

@@ -80,15 +80,23 @@ export default function ProductCard({ product }: ProductCardProps) {
             product.id === 'organic-baby-spinach-003' ? 'bg-gradient-to-br from-green-400 via-emerald-500 to-teal-500' :
             'bg-gradient-to-br from-accent-primary via-accent-secondary to-orange-400'
           }`}>
-            <div className="text-white text-center">
-              <div className="text-7xl mb-4">
-                {product.id === 'organic-alphonso-mangoes-001' ? '🥭' :
-                 product.id === 'organic-red-onions-002' ? '🧅' :
-                 product.id === 'organic-baby-spinach-003' ? '🥬' :
-                 '🌱'}
+            {product.image ? (
+              <img
+                src={`/products/${product.image}`}
+                alt={product.name}
+                className="w-full h-full object-cover object-center"
+              />
+            ) : (
+              <div className="text-white text-center">
+                <div className="text-7xl mb-4">
+                  {product.id === 'organic-alphonso-mangoes-001' ? '🥭' :
+                   product.id === 'organic-red-onions-002' ? '🧅' :
+                   product.id === 'organic-baby-spinach-003' ? '🥬' :
+                   '🌱'}
+                </div>
+                <p className="text-lg font-semibold px-4 opacity-90">{product.name}</p>
               </div>
-              <p className="text-lg font-semibold px-4 opacity-90">{product.name}</p>
-            </div>
+            )}
           </div>
           
           {/* Temperature Badge - Live */}

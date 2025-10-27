@@ -106,7 +106,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     }).format(date);
   };
 
-  const allImages = ['view1', 'view2', 'view3', 'view4']; // Mock image names
+  // Use product images if available, otherwise fallback to mock names
+  const allImages = product.images && product.images.length > 0 ? product.images : ['view1', 'view2', 'view3', 'view4'];
 
   return (
     <Layout>
@@ -123,15 +124,21 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   product.id === 'organic-baby-spinach-003' ? 'bg-gradient-to-br from-green-400 via-emerald-500 to-teal-500' :
                   'bg-gradient-to-br from-accent-primary via-accent-secondary to-orange-400'
                 }`}>
-                  <div className="text-center transform hover:scale-110 transition-transform duration-500">
-                    <div className="text-9xl mb-6 drop-shadow-2xl">
-                      {product.id === 'organic-alphonso-mangoes-001' ? '🥭' :
-                       product.id === 'organic-red-onions-002' ? '🧅' :
-                       product.id === 'organic-baby-spinach-003' ? '🥬' :
-                       '🌱'}
+                  {product.images && product.images.length > 0 ? (
+                    <img src={`/products/${product.images[selectedImage]}`} alt={product.name} className="w-full h-full object-cover object-center" />
+                  ) : product.image ? (
+                    <img src={`/products/${product.image}`} alt={product.name} className="w-full h-full object-cover object-center" />
+                  ) : (
+                    <div className="text-center transform hover:scale-110 transition-transform duration-500">
+                      <div className="text-9xl mb-6 drop-shadow-2xl">
+                        {product.id === 'organic-alphonso-mangoes-001' ? '🥭' :
+                         product.id === 'organic-red-onions-002' ? '🧅' :
+                         product.id === 'organic-baby-spinach-003' ? '🥬' :
+                         '🌱'}
+                      </div>
+                      <p className="text-2xl font-bold text-white drop-shadow-lg px-4">{product.name}</p>
                     </div>
-                    <p className="text-2xl font-bold text-white drop-shadow-lg px-4">{product.name}</p>
-                  </div>
+                  )}
                 </div>
                 
                 {/* Temperature Badge - Live from Raspberry Pi */}
@@ -183,16 +190,24 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                         : 'border-transparent hover:border-accent-primary/30'
                     }`}
                   >
-                    <div className={`w-full h-full flex items-center justify-center text-4xl ${
+                    <div className={`w-full h-full flex items-center justify-center ${
                       index === 0 ? 'bg-gradient-to-br from-yellow-300 via-orange-400 to-red-400' :
                       index === 1 ? 'bg-gradient-to-br from-green-300 via-emerald-400 to-teal-500' :
                       index === 2 ? 'bg-gradient-to-br from-purple-300 via-pink-400 to-red-400' :
                       'bg-gradient-to-br from-blue-300 via-cyan-400 to-sky-500'
                     }`}>
-                      {product.id === 'organic-alphonso-mangoes-001' ? '🥭' :
-                       product.id === 'organic-red-onions-002' ? '🧅' :
-                       product.id === 'organic-baby-spinach-003' ? '🥬' :
-                       '🌱'}
+                      {product.images && product.images.length > 0 ? (
+                        <img src={`/products/${image}`} alt={`${product.name} ${index+1}`} className="w-full h-full object-cover object-center" />
+                      ) : product.image ? (
+                        <img src={`/products/${product.image}`} alt={`${product.name} ${index+1}`} className="w-full h-full object-cover object-center" />
+                      ) : (
+                        <div className="text-4xl">
+                          {product.id === 'organic-alphonso-mangoes-001' ? '🥭' :
+                           product.id === 'organic-red-onions-002' ? '🧅' :
+                           product.id === 'organic-baby-spinach-003' ? '🥬' :
+                           '🌱'}
+                        </div>
+                      )}
                     </div>
                   </button>
                 ))}
